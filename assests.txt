@@ -1,0 +1,11 @@
+R001|Consultation Room|Allocated|U001
+R002|Consultation Room|Available|-
+W001|Inpatient Ward|Available|-
+W002|Inpatient Ward|Available|-
+L001|Laboratory|Available|-
+L002|Laboratory|Available|-
+X001|X-Ray Room|Available|-
+X002|X-Ray Room|Available|-
+P001|Pharmacy|Available|-
+P002|Pharmacy|Available|-
+R004|Consultation Room|Available|-
