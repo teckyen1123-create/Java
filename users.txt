@@ -1,0 +1,8 @@
+#userID|Name|Role|userName|Password
+U001|Koek Yu Hang|Doctor|Koek|1234
+U002|Teoh Kai Shen|Patient|Teoh|12345
+U003|Yap Zheng Jie|Manager|Yap|6789
+U004|Lim Teck Yen|Admin|Lim|1357
+U005|jstinky|Manager|sjs|1234
+U006|Sans|Doctor|ss|123
+U007|Papyrus|Doctor|pp|abc
