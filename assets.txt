@@ -1,3 +1,4 @@
+#AssetID|AssetType|Status|Allocated-to
 R001|Consultation Room|Allocated|U001
 R002|Consultation Room|Available|-
 W001|Inpatient Ward|Available|-
