@@ -5,7 +5,7 @@ public class Patient extends User{
 
     @Override
     public void openDashboard() {
-        PatientFrame patient = new PatientFrame();
+        PatientFrame patient = new PatientFrame(this);
         patient.setVisible(true);
     }
 }
