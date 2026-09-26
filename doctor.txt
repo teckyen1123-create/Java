@@ -1,0 +1,4 @@
+userID|name|email|phone|specialty|managerID
+U001|Koek Yu Hang|koek.yuhang@apu.edu.my|0123456789|Cardiology|U003
+U006|Sans|sans.doc@apu.edu.my|0198765432|Neurology|U003
+U007|Papyrus|papyrus.doc@apu.edu.my|0176543210|Orthopedics|U005
