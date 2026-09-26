@@ -1,0 +1,2 @@
+#userID|Name|Email|PhoneNumber|BloodType
+U002|Teoh Kai Shen|shen@gmail.com|0123456789|O+
