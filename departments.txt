@@ -1,0 +1,5 @@
+D01|Cardiology|Heart and cardiovascular treatments
+D02|Neurology|Brain and nervous system care
+D03|Orthopedics|Bone and joint treatments
+D04|Pediatrics|Medical care for infants and children
+D05|Emergency|24/7 urgent medical care
