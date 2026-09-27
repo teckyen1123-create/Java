@@ -301,3 +301,247 @@ public class DoctorFileHandler {
         }
     }
 }
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package assignment;
+import java.io.*;
+import java.util.*;
+import javax.swing.JComboBox;
+/**
+ *
+ * @author kaishen
+ */
+public class DoctorFileHandler {
+    private final String fileName = "doctor.txt";
+    
+    public void loadDoctors(JComboBox<String> doctorcombo){
+        try{
+            File file = new File(fileName);
+            if (!file.exists()){
+                return;
+            }
+
+            Scanner input = new Scanner(file);
+
+            while (input.hasNextLine()){
+                String line = input.nextLine();
+                
+                if (line.startsWith("#") || line.trim().isEmpty()) {
+                    continue;
+                }
+                
+                String[] data = line.split("\\|");
+                
+                if (data.length < 6) {
+                    continue;
+                }
+
+                String doctorID = data[0];
+                String name = data[1];
+                String managerID = data[5];
+
+                if (managerID.equals("Not Assigned")){
+                    doctorcombo.addItem(doctorID + " - " + name);
+
+                }else {
+                    doctorcombo.addItem(doctorID + " - " + name+ " (Already Assigned)");
+                }
+            }
+
+            input.close();
+        }catch (FileNotFoundException e) {
+            System.out.println("doctor.txt not found.");
+        }
+    }
+    
+    public String assignManager(String doctorID, String managerID){
+        try{
+            File file = new File(fileName);
+
+            Scanner input = new Scanner(file);
+            String newData = "";
+            String oldManagerID = "";
+
+            while (input.hasNextLine()){
+                String line = input.nextLine();
+                String[] data = line.split("\\|");
+
+                if (data[0].equals(doctorID)){
+                    oldManagerID = data[5];
+                    data[5] = managerID;
+                }
+                newData += String.join("|", data) + "\n";
+            }
+
+            input.close();
+
+            FileWriter writer = new FileWriter(fileName);
+            writer.write(newData);
+            writer.close();
+
+            return oldManagerID;
+
+        }catch (IOException e) {
+            System.out.println("Error saving doctor file.");
+            return null;
+        }
+    }
+    
+        public ArrayList<String> getAllSpecialties() {
+
+        ArrayList<String> specialties = new ArrayList<>();
+
+        try {
+
+            File file = new File(fileName);
+            Scanner input = new Scanner(file);
+
+            while (input.hasNextLine()) {
+
+                String line = input.nextLine();
+
+                if (line.startsWith("#") || line.trim().isEmpty()) {
+                    continue;
+                }
+
+                String[] data = line.split("\\|");
+
+                if (data.length >= 6) {
+
+                    String specialty = data[4];
+
+                    if (!specialties.contains(specialty)) {
+                        specialties.add(specialty);
+                    }
+                }
+            }
+
+            input.close();
+
+        } catch (FileNotFoundException e) {
+
+            System.out.println("doctor.txt not found.");
+        }
+
+        return specialties;
+    }
+
+
+    // Get doctor names according to selected specialty
+    public ArrayList<String> getDoctorNamesBySpecialty(String specialty) {
+
+        ArrayList<String> doctors = new ArrayList<>();
+
+        try {
+
+            File file = new File(fileName);
+            Scanner input = new Scanner(file);
+
+            while (input.hasNextLine()) {
+
+                String line = input.nextLine();
+
+                if (line.startsWith("#") || line.trim().isEmpty()) {
+                    continue;
+                }
+
+                String[] data = line.split("\\|");
+
+                if (data.length >= 6
+                        && data[4].equals(specialty)) {
+
+                    doctors.add(data[1]);
+                }
+            }
+
+            input.close();
+
+        } catch (FileNotFoundException e) {
+
+            System.out.println("doctor.txt not found.");
+        }
+
+        return doctors;
+    }
+
+
+    // Get doctor ID according to doctor name
+    public String getDoctorIDByName(String doctorName) {
+
+        try {
+
+            File file = new File(fileName);
+            Scanner input = new Scanner(file);
+
+            while (input.hasNextLine()) {
+
+                String line = input.nextLine();
+
+                if (line.startsWith("#") || line.trim().isEmpty()) {
+                    continue;
+                }
+
+                String[] data = line.split("\\|");
+
+                if (data.length >= 6
+                        && data[1].equals(doctorName)) {
+
+                    input.close();
+                    return data[0];
+                }
+            }
+
+            input.close();
+
+        } catch (FileNotFoundException e) {
+
+            System.out.println("doctor.txt not found.");
+        }
+
+        return null;
+    }
+    
+    public String getDoctorNameByID(String doctorID) {
+
+        try {
+            File file = new File(fileName);
+            Scanner input = new Scanner(file);
+
+            while (input.hasNextLine()) {
+
+                String line = input.nextLine();
+
+                if (line.startsWith("#")
+                        || line.trim().isEmpty()) {
+                    continue;
+                }
+
+                String[] data = line.split("\\|");
+
+                if (data.length >= 6
+                        && data[0].equals(doctorID)) {
+
+                    input.close();
+
+                    return data[1];
+                }
+            }
+
+            input.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("doctor.txt not found.");
+        }
+
+        return null;
+    }
+}
