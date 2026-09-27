@@ -318,4 +318,88 @@ public class Userfilehandler {
         }
         return null;
     }
+    public User getUserByID(String userID) {
+
+        try {
+    
+            File file = new File(fileName);
+    
+            if (!file.exists()) {
+                return null;
+            }
+    
+            Scanner input = new Scanner(file);
+    
+            while (input.hasNextLine()) {
+    
+                String line = input.nextLine();
+    
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+    
+                String[] data = line.split("\\|");
+    
+                if (data.length < 5) {
+                    continue;
+                }
+    
+                if (data[0].equals(userID)) {
+    
+                    String id = data[0];
+                    String name = data[1];
+                    String role = data[2];
+                    String username = data[3];
+                    String password = data[4];
+    
+                    input.close();
+    
+                    if (role.equals("Admin")) {
+    
+                        return new Admin(
+                                id,
+                                name,
+                                username,
+                                password
+                        );
+    
+                    } else if (role.equals("Manager")) {
+    
+                        return new Manager(
+                                id,
+                                name,
+                                username,
+                                password
+                        );
+    
+                    } else if (role.equals("Doctor")) {
+    
+                        return new Doctor(
+                                id,
+                                name,
+                                username,
+                                password
+                        );
+    
+                    } else if (role.equals("Patient")) {
+    
+                        return new Patient(
+                                id,
+                                name,
+                                username,
+                                password
+                        );
+                    }
+                }
+            }
+    
+            input.close();
+    
+        } catch (FileNotFoundException e) {
+    
+            System.out.println("users.txt not found.");
+        }
+    
+        return null;
+    }
 }
