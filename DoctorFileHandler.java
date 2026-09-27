@@ -122,3 +122,174 @@ public class DoctorFileHandler {
         }
     }
 }
+
+------------------------------------------------------------------------------------------------------------
+package assignment;
+
+import java.io.*;
+import java.util.*;
+import javax.swing.JComboBox;
+
+public class DoctorFileHandler {
+    
+    private final String fileName = "doctor.txt";
+
+    public boolean updateDoctorProfile(Doctor currentDoctor, String newDoctorLine) {
+        UserFileHandler userHandler = new UserFileHandler();
+        
+        String userUpdateStatus = userHandler.updateUser(
+                currentDoctor.getUserID(),
+                currentDoctor.getName(),
+                "Doctor",
+                currentDoctor.getUsername(),
+                currentDoctor.getPassword()
+        ); 
+
+        boolean isDocUpdated = updateSingleFile(fileName, currentDoctor.getUserID(), newDoctorLine);
+        return userUpdateStatus.equals("SUCCESS") && isDocUpdated;
+    }
+
+    private boolean updateSingleFile(String fileName, String targetID, String newLineData) {
+        List<String> fileLines = new ArrayList<>();
+        boolean found = false;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty() || line.startsWith("#")) continue;
+                
+                String[] parts = line.split("\\|");
+                if (parts[0].equals(targetID)) {
+                    fileLines.add(newLineData); 
+                    found = true;
+                } else {
+                    fileLines.add(line); 
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Read error in " + fileName + ": " + e.getMessage());
+            return false;
+        }
+
+        if (found) {
+            try (FileWriter writer = new FileWriter(fileName, false)) { 
+                for (String l : fileLines) {
+                    writer.write(l + System.lineSeparator());
+                }
+                return true;
+            } catch (IOException e) {
+                System.out.println("Write error in " + fileName + ": " + e.getMessage());
+                return false;
+            }
+        }
+        return false; 
+    }
+    
+    public void loadDoctors(JComboBox<String> doctorcombo){
+        try{
+            File file = new File(fileName);
+            if (!file.exists()){
+                return;
+            }
+
+            Scanner input = new Scanner(file);
+
+            while (input.hasNextLine()){
+                String line = input.nextLine();
+                String[] data = line.split("\\|");
+
+                String doctorID = data[0];
+                String name = data[1];
+                String managerID = data[5];
+
+                if (managerID.equals("Not Assigned")){
+                    doctorcombo.addItem(doctorID + " - " + name);
+                }else {
+                    doctorcombo.addItem(doctorID + " - " + name+ " (Already Assigned)");
+                }
+            }
+
+            input.close();
+        }catch (FileNotFoundException e) {
+            System.out.println("doctor.txt not found.");
+        }
+    }
+    
+    public String assignManager(String doctorID, String managerID){
+        try{
+            File file = new File(fileName);
+
+            Scanner input = new Scanner(file);
+            String newData = "";
+            String oldManagerID = "";
+
+            while (input.hasNextLine()){
+                String line = input.nextLine();
+                String[] data = line.split("\\|");
+
+                if (data[0].equals(doctorID)){
+                    oldManagerID = data[5];
+                    data[5] = managerID;
+                }
+                newData += String.join("|", data) + "\n";
+            }
+
+            input.close();
+
+            FileWriter writer = new FileWriter(fileName);
+            writer.write(newData);
+            writer.close();
+
+            return oldManagerID;
+
+        }catch (IOException e) {
+            System.out.println("Error saving doctor file.");
+            return null;
+        }
+    }
+    
+    // Add new doctor
+    public void addDoctor(String userID, String name){
+        try{
+            FileWriter writer =new FileWriter(fileName, true);
+            writer.write("\n"
+                    + userID + "|"
+                    + name + "|||"
+                    + "Not Assigned|Not Assigned");
+            writer.close();
+
+        }catch (IOException e) {
+            System.out.println("Error saving doctor file.");
+        }
+    }
+    
+    public void deleteDoctor(String userID){
+        try{
+            File file = new File(fileName);
+            if (!file.exists()) {
+                return;
+            }
+
+            Scanner input = new Scanner(file);
+            String newData = "";
+
+            while (input.hasNextLine()){
+                String line = input.nextLine();
+                String[] data = line.split("\\|");
+
+                if (!data[0].equals(userID)) {
+                    newData = newData + line + "\n";
+                }
+            }
+
+            input.close();
+
+            FileWriter writer =new FileWriter(fileName);
+            writer.write(newData);
+            writer.close();
+
+        }catch (IOException e) {
+            System.out.println("Error deleting doctor profile.");
+        }
+    }
+}
