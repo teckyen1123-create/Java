@@ -128,11 +128,14 @@ public class Doctor extends User {
     }
 
     public boolean issuePrescription(String patientID, String medication, String dosage, String instructions) {
-        String rxID = "RX" + System.currentTimeMillis();
-        
-        String recordLine = rxID + "|" + this.getUserID() + "|" + patientID + "|" + medication + "|" + dosage + "|" + instructions;
-
         PrescriptionFileHandler handler = new PrescriptionFileHandler();
+        String rxID = handler.generatePrescriptionID();
+        
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String currentDate = java.time.LocalDate.now().format(formatter);
+        
+        String recordLine = rxID + "|" + patientID + "|" + this.getUserID() + "|" + currentDate + "|" + medication + "|" + dosage + "|" + instructions;
+
         return handler.save(recordLine);
     }
 
