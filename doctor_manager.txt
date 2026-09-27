@@ -1,2 +1,0 @@
-#DoctorID|ManagerID
-U001|U003
