@@ -150,36 +150,45 @@ public class PatientFileHandle {
         return getPatientByID(userID) != null;
 }
 
-    public static void main(String[] args) {
-
-        PatientFileHandle handle = new PatientFileHandle();
-
-        Patient patient = handle.getPatientByID("U002");
-
-        if (patient != null) {
-
-            System.out.println("Patient found:");
-            System.out.println("Patient ID: " + patient.getUserID());
-            System.out.println("Name: " + patient.getName());
-            System.out.println("Email: " + patient.getEmail());
-            System.out.println("Phone: " + patient.getPhone());
-            System.out.println("Blood Type: " + patient.getBloodType());
-
-        } else {
-
-            System.out.println("Patient not found.");
+    // Add new patient
+    public void fileaddPatient(String userID, String name){
+        try{
+            FileWriter writer = new FileWriter(fileName, true);
+            writer.write("\n"
+                    + userID + "|"
+                    + name + "|||Not Assigned");
+            writer.close();
+        }catch (IOException e) {
+            System.out.println("Error saving patient file.");
         }
-        
-        System.out.println();
-        
-        if (handle.patientExists("U002")){
-            
-             System.out.println("U002 exists.");
-        }
-        
-        else{
-            System.out.println("U002 does not exist.");
-        }
-
     }
+    
+    // Delete patient profile
+    public void deletePatient(String userID){
+        try{
+            File file = new File(fileName);
+
+            if (!file.exists()) {
+                return;
+            }
+
+            Scanner input = new Scanner(file);
+            String newData = "";
+
+            while (input.hasNextLine()){
+                String line = input.nextLine();
+                String[] data = line.split("\\|");
+
+                if (!data[0].equals(userID)){
+                    newData = newData + line + "\n";
+                }
+            }
+
+            input.close();
+
+            FileWriter writer = new FileWriter(fileName);
+            writer.write(newData);
+            writer.close();
+
+    public static void main(String[] args) {
 }
