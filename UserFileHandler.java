@@ -402,4 +402,33 @@ public class Userfilehandler {
     
         return null;
     }
+
+    public String[] getUserAccount(String userID){
+        try{
+            File file = new File(fileName);
+
+            if (!file.exists()) {
+                return null;
+            }
+            Scanner input = new Scanner(file);
+
+            while (input.hasNextLine()){
+                String line = input.nextLine();
+                if (line.isEmpty()){
+                    continue;
+                }
+                String[] data = line.split("\\|");
+                if (data[0].equals(userID)){
+                    input.close();
+                    return data;
+                }
+            }
+
+            input.close();
+
+        }catch (FileNotFoundException e) {
+            System.out.println("users.txt not found.");
+        }
+        return null;
+    }
 }
