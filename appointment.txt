@@ -1,0 +1,4 @@
+A001|U002|Cardiology|U001|27/09/2026|11:00|Booked
+A002|U002|Neurology|U006|03/10/2026|09:00|Booked
+A003|U002|Cardiology|U001|02/10/2026|09:00|Cancelled
+A004|U002|Cardiology|U001|30/09/2026|16:30|Cancelled

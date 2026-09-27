@@ -1,0 +1,2 @@
+H001|U002|U006|15/09/2026|Migraine|Medication|Get enough rest and avoid bright lights
+H002|U002|U001|20/09/2026|Fever|Medication|Take medicine twice daily
