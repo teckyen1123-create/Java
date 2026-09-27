@@ -150,39 +150,47 @@ public class DoctorFileHandler {
     }
 
     private boolean updateSingleFile(String fileName, String targetID, String newLineData) {
-        List<String> fileLines = new ArrayList<>();
         boolean found = false;
+        String newData = "";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty() || line.startsWith("#")) continue;
+        try {
+            File file = new File(fileName);
+            if (!file.exists()) {
+                return false;
+            }
+
+            Scanner input = new Scanner(file);
+
+            while (input.hasNextLine()) {
+                String line = input.nextLine();
+                
+                if (line.trim().isEmpty() || line.startsWith("#")) {
+                    continue;
+                }
                 
                 String[] parts = line.split("\\|");
                 if (parts[0].equals(targetID)) {
-                    fileLines.add(newLineData); 
+                    newData += newLineData + "\n"; 
                     found = true;
                 } else {
-                    fileLines.add(line); 
+                    newData += line + "\n";
                 }
             }
+            input.close();
+
+            if (found) {
+                FileWriter writer = new FileWriter(fileName, false);
+                writer.write(newData);
+                writer.close();
+                return true;
+            }
+
+            return false;
+            
         } catch (IOException e) {
-            System.out.println("Read error in " + fileName + ": " + e.getMessage());
+            System.out.println("Error processing " + fileName + ": " + e.getMessage());
             return false;
         }
-
-        if (found) {
-            try (FileWriter writer = new FileWriter(fileName, false)) { 
-                for (String l : fileLines) {
-                    writer.write(l + System.lineSeparator());
-                }
-                return true;
-            } catch (IOException e) {
-                System.out.println("Write error in " + fileName + ": " + e.getMessage());
-                return false;
-            }
-        }
-        return false; 
     }
     
     public void loadDoctors(JComboBox<String> doctorcombo){
