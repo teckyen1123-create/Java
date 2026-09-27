@@ -76,4 +76,49 @@ public class DoctorFileHandler {
             return null;
         }
     }
+    
+    // Add new doctor
+    public void addDoctor(String userID, String name){
+        try{
+            FileWriter writer =new FileWriter(fileName, true);
+            writer.write("\n"
+                    + userID + "|"
+                    + name + "|||"
+                    + "Not Assigned|Not Assigned");
+            writer.close();
+
+        }catch (IOException e) {
+            System.out.println("Error saving doctor file.");
+        }
+    }
+    
+    public void deleteDoctor(String userID){
+        try{
+            File file = new File(fileName);
+            if (!file.exists()) {
+                return;
+            }
+
+            Scanner input = new Scanner(file);
+            String newData = "";
+
+            while (input.hasNextLine()){
+                String line = input.nextLine();
+                String[] data = line.split("\\|");
+
+                if (!data[0].equals(userID)) {
+                    newData = newData + line + "\n";
+                }
+            }
+
+            input.close();
+
+            FileWriter writer =new FileWriter(fileName);
+            writer.write(newData);
+            writer.close();
+
+        }catch (IOException e) {
+            System.out.println("Error deleting doctor profile.");
+        }
+    }
 }
