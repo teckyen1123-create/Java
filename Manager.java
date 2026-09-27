@@ -5,7 +5,7 @@ public class Manager extends User{
 
     @Override
     public void openDashboard() {
-        ManagerFrame manager = new ManagerFrame();
+        ManagerFrame manager = new ManagerFrame(this);
         manager.setVisible(true);
     }
 }
