@@ -1,0 +1,4 @@
+#appointmentID|patientID|specialty|doctorID|date|time|status
+A001|U002|Cardiology|U001|27/09/2026|10:00|Booked
+A002|U002|Orthopedics|U007|28/09/2026|11:00|Booked
+A003|U002|Neurology|U006|02/10/2026|14:00|Booked
